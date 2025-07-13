@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能遥控器 - 您的智能家居控制中心</title>
+    <style>
+        :root {
+            --primary-color: #0080FF;
+            --secondary-color: #0066CC;
+            --bg-color: #F5F9FF;
+            --text-color: #333333;
+            --light-gray: #F0F0F0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-align: center;
+            padding: 60px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 1;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="none" width="100" height="100"/><path d="M50,30 L70,50 L50,70 L30,50 Z" fill="white"/></svg>');
+            background-size: 100px;
+        }
+        
+        .app-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        section {
+            padding: 60px 20px;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 50px;
+            color: var(--primary-color);
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            width: 300px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+        }
+        
+        .feature-content {
+            padding: 20px;
+        }
+        
+        .feature-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .contact-section {
+            background-color: white;
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .contact-item {
+            text-align: center;
+            padding: 30px;
+            border-radius: 10px;
+            background-color: var(--light-gray);
+        }
+        
+        .contact-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .footer-links {
+            margin: 15px 0;
+        }
+        
+        .footer-links a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .policy-content {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-top: 20px;
+        }
+        
+        .policy-content h3 {
+            color: var(--primary-color);
+            margin: 20px 0 10px;
+        }
+        
+        .policy-content p, .policy-content ul {
+            margin-bottom: 15px;
+        }
+        
+        .policy-content ul {
+            padding-left: 20px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .tab-button {
+            padding: 10px 20px;
+            background-color: var(--light-gray);
+            border: none;
+            cursor: pointer;
+            margin: 0 5px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-button.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+            
+            section {
+                padding: 40px 20px;
+            }
+            
+            .app-icon {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .feature-card {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-bg"></div>
+        <div class="header-content">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTYgMjU2Ij48cmVjdCBmaWxsPSIjMDA4MEZGIiB3aWR0aD0iMjU2IiBoZWlnaHQ9IjI1NiIgcng9IjI0Ii8+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTg4IDY0djEyOGMwIDQuNCAxMi4yIDggMjQgOGgzMmMxMS44IDAgMjQtMy42IDI0LThWNjRjMC00LjQtMTIuMi04LTI0LThIMTEyYy0xMS44IDAtMjQgMy42LTI0IDh6bTI0IDRoMzJjNi42IDAgMTIgLjkgMTIgMi42djM0LjhjMCAxLjctNS40IDIuNi0xMiAyLjZoLTMyYy02LjYgMC0xMi0uOS0xMi0yLjZWNzAuNmMwLTEuNyA1LjQtMi42IDEyLTIuNnptMCAxMjBoMzJjNi42IDAgMTIgLjkgMTIgMi42djQuOGMwIDEuNy01LjQgMi42LTEyIDIuNmgtMzJjLTYuNiAwLTEyLS45LTEyLTIuNnYtNC44YzAtMS43IDUuNC0yLjYgMTItMi42em0tNi0yMGMtMy4zIDAtNiAyLjctNiA2cy0yLjcgNi02IDYtNi0yLjctNi02IDIuNy02IDYtNiA2IDIuNyA2IDZjMC0zLjMgMi43LTYgNi02em0yNCAyNGMwLTMuMyAyLjctNiA2LTZzNi0yLjcgNi02IDIuNy02IDYtNiA2IDIuNyA2IDYtMi43IDYtNiA2LTYgMi43LTYgNnptMzAtOTZIMTIwQzEwOS42IDk2IDEwMCA4Ni40IDEwMCA3NnMxMS44LTI2IDI4LTI2YzE1LjUgMCAyOCAxMi4zIDI4IDI2IDAgNy4zLTQgMTYtMTAgMjB6Ii8+PC9zdmc+Cg==" alt="智能遥控器" class="app-icon">
+            <h1>智能遥控器</h1>
+            <p class="tagline">您的智能家居控制中心</p>
+        </div>
+    </header>
+
+    <section id="features">
+        <div class="container">
+            <h2 class="section-title">强大功能</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">🌡️</div>
+                    <div class="feature-content">
+                        <h3 class="feature-title">空调专业控制</h3>
+                        <p>精准温度调节，多种模式切换，风速风向全方位调整，支持市场主流空调品牌和型号。</p>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📺</div>
+                    <div class="feature-content">
+                        <h3 class="feature-title">电视遥控</h3>
+                        <p>支持主流电视品牌，频道切换、音量调节、智能操作，让您的观影体验更加流畅。</p>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+                    <div class="feature-content">
+                        <h3 class="feature-title">灯光控制</h3>
+                        <p>控制智能灯具，调节亮度，切换场景，创造舒适温馨的家居环境。</p>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔊</div>
+                    <div class="feature-content">
+                        <h3 class="feature-title">音响系统</h3>
+                        <p>轻松控制家庭音响系统，调节音量，切换曲目，享受高品质音乐体验。</p>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🏠</div>
+                    <div class="feature-content">
+                        <h3 class="feature-title">多房间管理</h3>
+                        <p>为不同房间配置设备，轻松切换，实现全屋智能控制。</p>
+                    </div>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-content">
+                        <h3 class="feature-title">便捷操作</h3>
+                        <p>直观美观的界面设计，智能检测连接状态，快速添加和配置不同类型设备。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">联系我们</h2>
+            <div class="contact-grid">
+                <div class="contact-item">
+                    <div class="contact-icon">✉️</div>
+                    <h3>电子邮件</h3>
+                    <p>VillanvevaMaddison4451@outlook.com</p>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">📱</div>
+                    <h3>应用内联系</h3>
+                    <p>请通过应用内的"设置"页面联系我们</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="legal" class="legal-section">
+        <div class="container">
+            <h2 class="section-title">法律信息</h2>
+            
+            <div class="tab-buttons">
+                <button class="tab-button active" data-tab="privacy">隐私政策</button>
+                <button class="tab-button" data-tab="terms">用户协议</button>
+            </div>
+            
+            <div class="policy-content" id="privacy-policy">
+                <h2>隐私政策</h2>
+                <p><a href="https://www.termsfeed.com/live/a82461ef-eb0f-48b1-8693-a562061f66f5" target="_blank">https://www.termsfeed.com/live/a82461ef-eb0f-48b1-8693-a562061f66f5</a></p>
+            </div>
+            
+            <div class="policy-content hidden" id="terms-policy">
+                <h2>用户协议</h2>
+                <p><a href="https://www.termsfeed.com/live/e29ad9e3-fa74-4dce-a970-1c7601079cc4" target="_blank">https://www.termsfeed.com/live/e29ad9e3-fa74-4dce-a970-1c7601079cc4</a></p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-links">
+            <a href="#features">功能</a>
+            <a href="#contact">联系我们</a>
+            <a href="#" data-tab="privacy">隐私政策</a>
+            <a href="#" data-tab="terms">用户协议</a>
+        </div>
+        <p>&copy; 2023-2025 智能遥控器. 保留所有权利。</p>
+    </footer>
+
+    <script>
+        // 切换隐私政策/用户协议标签页
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                // 更新按钮状态
+                document.querySelectorAll('.tab-button').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                button.classList.add('active');
+                
+                // 隐藏所有内容
+                document.querySelectorAll('.policy-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                // 显示选中的内容
+                const tabId = button.getAttribute('data-tab') + '-policy';
+                document.getElementById(tabId).classList.remove('hidden');
+            });
+        });
+        
+        // 页脚链接处理
+        document.querySelectorAll('.footer-links a[data-tab]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // 滚动到法律部分
+                document.getElementById('legal').scrollIntoView({behavior: 'smooth'});
+                
+                // 点击对应的标签按钮
+                setTimeout(() => {
+                    const tabId = link.getAttribute('data-tab');
+                    document.querySelector(`.tab-button[data-tab="${tabId}"]`).click();
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html> 
